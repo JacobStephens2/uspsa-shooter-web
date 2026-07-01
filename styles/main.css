@@ -1,0 +1,190 @@
+/*
+  Practical Range — base layout, palette tokens and boot splash.
+  The HUD (src/ui/HUD.js) and Menu (src/ui/Menu.js) modules inject their own
+  scoped styles and DOM; they reference the CSS custom properties defined here
+  so the whole game shares one visual language.
+*/
+
+:root {
+  /* Palette --------------------------------------------------------------- */
+  --range-bg: #0b0e0c;
+  --range-panel: rgba(13, 17, 14, 0.88);
+  --range-panel-solid: #11150f;
+  --range-line: rgba(224, 176, 64, 0.28);
+  --range-amber: #e0b040;
+  --range-amber-bright: #ffce5c;
+  --range-green: #46c46a;
+  --range-green-dim: #2f8f49;
+  --range-red: #e2453a;
+  --range-red-bright: #ff6a5c;
+  --range-steel: #aab4af;
+  --range-text: #eef2ec;
+  --range-dim: #939c93;
+  --range-shadow: 0 10px 40px rgba(0, 0, 0, 0.55);
+
+  /* Type ------------------------------------------------------------------ */
+  --font-stack: "Rajdhani", "Oswald", "Bahnschrift", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", ui-monospace, "Consolas", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--range-bg);
+  color: var(--range-text);
+  font-family: var(--font-stack);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: default;
+}
+
+#app {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+#scene-root {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+#scene-root canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+#hud-root {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+#menu-root {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Shared reusable button look (menus opt into .rng-btn) --------------------- */
+.rng-btn {
+  font-family: var(--font-stack);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--range-text);
+  background: linear-gradient(180deg, rgba(224, 176, 64, 0.16), rgba(224, 176, 64, 0.04));
+  border: 1px solid var(--range-line);
+  border-radius: 4px;
+  padding: 0.85em 1.6em;
+  cursor: pointer;
+  transition: transform 0.08s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  pointer-events: auto;
+}
+
+.rng-btn:hover {
+  background: linear-gradient(180deg, rgba(224, 176, 64, 0.32), rgba(224, 176, 64, 0.1));
+  border-color: var(--range-amber);
+  box-shadow: 0 0 18px rgba(224, 176, 64, 0.25);
+}
+
+.rng-btn:active {
+  transform: translateY(1px) scale(0.99);
+}
+
+.rng-btn--primary {
+  background: linear-gradient(180deg, var(--range-amber), #b7862a);
+  border-color: var(--range-amber-bright);
+  color: #1a1405;
+  font-weight: 700;
+}
+
+.rng-btn--primary:hover {
+  background: linear-gradient(180deg, var(--range-amber-bright), #c9962f);
+}
+
+/* Boot splash -------------------------------------------------------------- */
+#boot-splash {
+  position: absolute;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 40%, #16201a 0%, #070907 75%);
+  transition: opacity 0.5s ease;
+}
+
+#boot-splash.fade {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.boot-inner {
+  text-align: center;
+}
+
+.boot-title {
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  letter-spacing: 0.35em;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--range-amber);
+  text-shadow: 0 0 24px rgba(224, 176, 64, 0.35);
+  padding-left: 0.35em;
+}
+
+.boot-sub {
+  margin-top: 0.8rem;
+  color: var(--range-dim);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.boot-bar {
+  margin: 1.6rem auto 0;
+  width: 220px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.boot-bar > span {
+  display: block;
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, var(--range-amber), transparent);
+  animation: boot-slide 1.1s ease-in-out infinite;
+}
+
+@keyframes boot-slide {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(320%); }
+}
+
+/* A tiny screen-reader helper / focus outline for accessibility */
+.rng-btn:focus-visible {
+  outline: 2px solid var(--range-amber-bright);
+  outline-offset: 2px;
+}
