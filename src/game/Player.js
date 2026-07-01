@@ -89,6 +89,14 @@ export class Player {
    * @param {{aabbs:Array, bounds:Object}} collision
    */
   update(dt, input, collision) {
+    // --- mouse look ---
+    // Apply accumulated pointer-lock mouse motion to yaw/pitch. Only when an
+    // input is supplied (i.e. during live gameplay, not the countdown).
+    if (input) {
+      const md = input.consumeMouseDelta();
+      if (md.x || md.y) this.look(md.x, md.y);
+    }
+
     // --- look (recoil recovery) ---
     this.recoilPitch += (0 - this.recoilPitch) * Math.min(1, dt * 12);
     this.recoilYaw += (0 - this.recoilYaw) * Math.min(1, dt * 12);

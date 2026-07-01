@@ -236,6 +236,7 @@ export class Game {
     this.sfx.startBeep();
     this._setMusic(this.stageIndex === 0 ? 'stage1' : 'stage2');
     if (!this.input.isLocked) this.input.requestLock();
+    this.input.consumeMouseDelta(); // discard motion accrued during the countdown so the view doesn't snap
   }
 
   _completeStage() {
